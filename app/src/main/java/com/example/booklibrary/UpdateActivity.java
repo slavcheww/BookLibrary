@@ -28,6 +28,9 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(UpdateActivity.this);
+                title = title_input.getText().toString().trim();
+                author = author_input.getText().toString().trim();
+                pages = pages_input.getText().toString().trim();
                 databaseHelper.updateData(id, title, author, pages);
             }
         });

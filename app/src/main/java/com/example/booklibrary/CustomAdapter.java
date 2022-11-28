@@ -1,5 +1,6 @@
 package com.example.booklibrary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,9 +17,11 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
+    Activity activity;
     private ArrayList book_id, book_titles, book_author, book_pages;
 
-    CustomAdapter(Context context, ArrayList book_id, ArrayList book_titles, ArrayList book_author, ArrayList book_pages){
+    CustomAdapter(Activity activity, Context context, ArrayList book_id, ArrayList book_titles, ArrayList book_author, ArrayList book_pages){
+        this.activity = activity;
         this.context = context;
         this.book_id = book_id;
         this.book_titles = book_titles;
@@ -43,16 +46,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.book_titles_txt.setText(String.valueOf(book_titles.get(position)));
         holder.book_author_txt.setText(String.valueOf(book_author.get(position)));
         holder.book_pages_txt.setText(String.valueOf(book_pages.get(position)));
-        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.mainLayout.setOnClickListener((view) -> {
                 Intent intent = new Intent(context, UpdateActivity.class);
                 intent.putExtra("id", String.valueOf(book_id.get(position)));
                 intent.putExtra("title", String.valueOf(book_titles.get(position)));
                 intent.putExtra("author", String.valueOf(book_author.get(position)));
                 intent.putExtra("pages", String.valueOf(book_pages.get(position)));
-                context.startActivity(intent);
-            }
+                activity.startActivityForResult(intent, 1);
         });
     }
 

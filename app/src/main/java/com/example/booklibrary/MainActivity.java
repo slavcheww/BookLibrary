@@ -1,9 +1,9 @@
 package com.example.booklibrary;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -31,12 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        add_button.setOnClickListener((view) -> {
                 Intent intent = new Intent(MainActivity.this, AddActivity.class);
                 startActivity(intent);
-            }
         });
 
         dbHelper = new DatabaseHelper(MainActivity.this);
@@ -47,9 +44,17 @@ public class MainActivity extends AppCompatActivity {
 
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(MainActivity.this, book_id, book_title, book_author, book_pages);
+        customAdapter = new CustomAdapter(MainActivity.this, MainActivity.this, book_id, book_title, book_author, book_pages);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+    }
+
+    @Override
+    protected  void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+            recreate();
+        }
     }
 
     void storeDataInArrays(){
