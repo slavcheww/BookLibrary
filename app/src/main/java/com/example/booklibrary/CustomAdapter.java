@@ -1,9 +1,11 @@
 package com.example.booklibrary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,11 +37,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+
         holder.book_id_txt.setText(String.valueOf(book_id.get(position)));
         holder.book_titles_txt.setText(String.valueOf(book_titles.get(position)));
         holder.book_author_txt.setText(String.valueOf(book_author.get(position)));
         holder.book_pages_txt.setText(String.valueOf(book_pages.get(position)));
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, UpdateActivity.class);
+                intent.putExtra("id", String.valueOf(book_id.get(position)));
+                intent.putExtra("title", String.valueOf(book_titles.get(position)));
+                intent.putExtra("author", String.valueOf(book_author.get(position)));
+                intent.putExtra("pages", String.valueOf(book_pages.get(position)));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -50,6 +64,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView book_id_txt, book_titles_txt, book_author_txt, book_pages_txt;
+        LinearLayout mainLayout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,6 +72,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             book_titles_txt = itemView.findViewById(R.id.book_title_txt);
             book_author_txt = itemView.findViewById(R.id.book_author_txt);
             book_pages_txt = itemView.findViewById(R.id.book_pages_txt);
+            mainLayout = itemView.findViewById(R.id.mainLayout);
         }
     }
 }
